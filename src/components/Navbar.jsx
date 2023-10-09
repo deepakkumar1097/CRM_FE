@@ -9,43 +9,74 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import { useTheme } from "@mui/material/styles";
+import Brightness4Icon from "@mui/icons-material/Brightness4";
+import Brightness7Icon from "@mui/icons-material/Brightness7";
 
-function Navbar({ links }) {
+function Navbar({ links, ColorModeContext }) {
+  const theme = useTheme();
+  const colorMode = React.useContext(ColorModeContext);
   const [value, setValue] = useState();
 
   return (
-    <AppBar sx={{ backgroundColor: "black" }}>
-      <Toolbar>
-        <Grid container spacing={1} alignItems="baseline">
-          <Grid item xs={2}>
-            <Typography>Dashboard</Typography>
+    <Box
+      sx={{
+        display: "flex",
+        width: "100%",
+        alignItems: "center",
+        justifyContent: "center",
+        bgcolor: "background.default",
+        color: "text.primary",
+        borderRadius: 1,
+        p: 3,
+      }}
+    >
+      <AppBar sx={{ backgroundColor: "black" }}>
+        <Toolbar>
+          <Grid container spacing={1} alignItems="baseline">
+            <Grid item xs={2}>
+              <Typography>Dashboard</Typography>
+            </Grid>
+            <Grid item xs={7}>
+              <Tabs
+                value={value}
+                textColor="inherit"
+                indicatorColor="secondary"
+                onChange={(e, val) => setValue(val)}
+              >
+                {links.map((item, index) => (
+                  <Tab label={item} key={index} />
+                ))}
+              </Tabs>
+            </Grid>
+            {/* <Grid item xs={1}></Grid> */}
+            <Grid item xs={3}>
+              <Box display="flex">
+                {/* {theme.palette.mode} mode */}
+                <IconButton
+                  sx={{ ml: 1 }}
+                  onClick={colorMode.toggleColorMode}
+                  color="inherit"
+                >
+                  {theme.palette.mode === "dark" ? (
+                    <Brightness7Icon />
+                  ) : (
+                    <Brightness4Icon />
+                  )}
+                </IconButton>
+                <Button sx={{ marginLeft: "auto" }} variant="primary">
+                  Login
+                </Button>
+                <Button sx={{ marginLeft: 1 }} variant="primary">
+                  Sign Up
+                </Button>
+              </Box>
+            </Grid>
           </Grid>
-          <Grid item xs={7}>
-            <Tabs
-              value={value}
-              textColor="inherit"
-              indicatorColor="secondary"
-              onChange={(e, val) => setValue(val)}
-            >
-              {links.map((item, index) => (
-                <Tab label={item} key={index} />
-              ))}
-            </Tabs>
-          </Grid>
-          <Grid item xs={1} />
-          <Grid item xs={2}>
-            <Box>
-              <Button sx={{ marginLeft: "auto" }} variant="primary">
-                Login
-              </Button>
-              <Button sx={{ marginLeft: 1 }} variant="primary">
-                Sign Up
-              </Button>
-            </Box>
-          </Grid>
-        </Grid>
-      </Toolbar>
-    </AppBar>
+        </Toolbar>
+      </AppBar>
+    </Box>
   );
 }
 export default Navbar;
