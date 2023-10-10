@@ -1,6 +1,8 @@
-import { createStore } from "redux";
-import darkModeReducer from "./reducers/darkModeReducer";
+import { combineReducers } from "redux";
+import { userReducer } from "./reducers/userReducer";
 
-const store = createStore(darkModeReducer);
+const rootReducer = combineReducers({
+  user: userReducer,
+});
 
-export default store;
+export default rootReducer;

@@ -35,11 +35,33 @@ export default function ToggleColorMode() {
     if (storedMode) {
       setMode(storedMode);
     }
+
+    // Check if the user is logged in and set the flag accordingly
+    const isLoggedIn = localStorage.getItem("isLoggedIn");
+    if (isLoggedIn === "true") {
+      // User is logged in, set a flag to indicate that
+      localStorage.setItem("isLoggedIn", "true");
+    } else {
+      // User is not logged in, remove the flag
+      localStorage.removeItem("isLoggedIn");
+    }
   }, []);
 
   const theme = React.useMemo(
     () =>
       createTheme({
+        svg: {
+          color: "white",
+        },
+        breakpoints: {
+          values: {
+            xs: 0,
+            sm: 425,
+            md: 900,
+            lg: 1200,
+            xl: 1536,
+          },
+        },
         typography: {
           fontFamily: "Poppins",
         },

@@ -23,4 +23,20 @@ body {
 .mobile_view {
   display: flex;
   margin-left: auto;
+  align-items: center;
+}
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.css-cgxari-MuiAvatar-root,
+.css-1p5rodp-MuiAvatar-root {
+  font-size: 14px !important;
+}
+.logout {
+  display: flex;
+  align-items: center;
+  margin-top: auto;
+  margin-bottom: 10px;
 }

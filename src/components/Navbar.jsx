@@ -11,14 +11,43 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import DrawerComp from "./DrawerComp";
 import DarkMode from "./DarkMode";
+import Avatar from "@mui/material/Avatar";
+import { deepPurple } from "@mui/material/colors";
 
 function Navbar({ links, ColorModeContext }) {
   const theme = useTheme();
-  const isMatch = useMediaQuery(theme.breakpoints.down("lg"));
-  const colorMode = React.useContext(ColorModeContext);
   const [value, setValue] = useState();
+
+  let navigate = useNavigate();
+
+  const isMatch = useMediaQuery(theme.breakpoints.down("lg"));
+  const isSmallDevice = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const colorMode = React.useContext(ColorModeContext);
+
+  const { user } = useSelector((user) => ({ ...user }));
+  console.log(user.name);
+
+  // Check if the user is logged in
+  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+
+  const handleLogout = () => {
+    // Perform the logout actions (e.g., clearing user session)
+    localStorage.removeItem("isLoggedIn"); // Example: Clear a "isLoggedIn" flag
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    localStorage.removeItem("loginUser"); // Example: Clear a user token if used
+    // Redirect to the sign-in page
+    navigate("/signin");
+    // window.location.href = "/signin";
+  };
+
+  const firstLetter = user.name[0].toUpperCase();
+  console.log(firstLetter);
 
   return (
     <Box
@@ -33,14 +62,36 @@ function Navbar({ links, ColorModeContext }) {
         p: 3,
       }}
     >
-      <AppBar sx={{ backgroundColor: "#132043" }}>
+      <AppBar sx={{ backgroundColor: "#113946" }}>
         <Toolbar>
           {isMatch ? (
             <>
-              <Typography>Dashboard</Typography>
+              <Typography>Dashboard</Typography>{" "}
               <div className="mobile_view">
+                {!isSmallDevice && (
+                  <>
+                    <div className="user-profile">
+                      <Avatar
+                        sx={{
+                          bgcolor: deepPurple[500],
+                          width: "30px",
+                          height: "30px",
+                        }}
+                      >
+                        {firstLetter}
+                      </Avatar>
+                      <Typography sx={{ marginRight: 1 }}>
+                        {user.name}
+                      </Typography>
+                    </div>
+                  </>
+                )}
                 <DarkMode colorMode={colorMode} theme={theme} />
-                <DrawerComp links={links} />
+                <DrawerComp
+                  links={links}
+                  isLoggedIn={isLoggedIn}
+                  handleLogout={handleLogout}
+                />
               </div>
             </>
           ) : (
@@ -62,13 +113,35 @@ function Navbar({ links, ColorModeContext }) {
               </Grid>
               <DarkMode colorMode={colorMode} theme={theme} xs={1} />
               <Grid item xs={2} alignItems="center">
-                <Box display="flex">
-                  <Button sx={{ marginLeft: "auto" }} variant="primary">
-                    Login
-                  </Button>
-                  <Button sx={{ marginLeft: 1 }} variant="primary">
+                <Box display="flex" alignItems={"center"}>
+                  {isLoggedIn && (
+                    <>
+                      <div className="user-profile">
+                        <Avatar
+                          sx={{
+                            bgcolor: deepPurple[500],
+                            width: "30px",
+                            height: "30px",
+                          }}
+                        >
+                          {firstLetter}
+                        </Avatar>
+                        <Typography sx={{ marginRight: 1 }}>
+                          {user.name}
+                        </Typography>
+                      </div>
+                      <Button
+                        sx={{ marginLeft: 1 }}
+                        variant="primary"
+                        onClick={handleLogout}
+                      >
+                        Logout
+                      </Button>
+                    </>
+                  )}
+                  {/* <Button sx={{ marginLeft: 1 }} variant="primary">
                     Sign Up
-                  </Button>
+                  </Button> */}
                 </Box>
               </Grid>
             </Grid>

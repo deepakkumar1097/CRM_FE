@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Box from "@mui/material/Box";
@@ -16,6 +17,8 @@ function SignIn() {
   const handleUserIdChange = (e) => setUserId(e.target.value);
   const handlePasswordChange = (e) => setPassword(e.target.value);
 
+  const dispatch = useDispatch();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -31,6 +34,11 @@ function SignIn() {
         const token = response.data.user.accessToken;
 
         localStorage.setItem("token", token);
+        localStorage.setItem("isLoggedIn", "true");
+        localStorage.setItem("user", JSON.stringify(response.data.user));
+
+        dispatch({ type: "LOGIN", payload: response.data.user });
+        localStorage.setItem("loginUser", response.data);
 
         navigate("/home");
       } else {
