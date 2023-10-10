@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Body from "../components/Body";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
@@ -15,15 +15,27 @@ function Home() {
 }
 
 export default function ToggleColorMode() {
-  const [mode, setMode] = React.useState("light");
+  const initialMode = localStorage.getItem("colorMode") || "light";
+  const [mode, setMode] = React.useState(initialMode);
   const colorMode = React.useMemo(
     () => ({
       toggleColorMode: () => {
-        setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
+        const newMode = mode === "light" ? "dark" : "light";
+        setMode(newMode);
+        // Store the color mode in local storage
+        localStorage.setItem("colorMode", newMode);
       },
     }),
-    []
+    [mode]
   );
+
+  useEffect(() => {
+    // Retrieve the color mode from local storage when the component mounts
+    const storedMode = localStorage.getItem("colorMode");
+    if (storedMode) {
+      setMode(storedMode);
+    }
+  }, []);
 
   const theme = React.useMemo(
     () =>

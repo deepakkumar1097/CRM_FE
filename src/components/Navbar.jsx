@@ -19,24 +19,6 @@ function Navbar({ links, ColorModeContext }) {
   const isMatch = useMediaQuery(theme.breakpoints.down("lg"));
   const colorMode = React.useContext(ColorModeContext);
   const [value, setValue] = useState();
-  const [isDarkMode, setIsDarkMode] = useState(false);
-
-  const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
-  };
-
-  useEffect(() => {
-    const storedDarkMode = localStorage.getItem("darkMode");
-    console.log("Stored Dark Mode:", storedDarkMode);
-    if (storedDarkMode !== null) {
-      setIsDarkMode(JSON.parse(storedDarkMode));
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("darkMode", JSON.stringify(isDarkMode));
-    console.log("Updated Dark Mode:", isDarkMode);
-  }, [isDarkMode]);
 
   return (
     <Box
@@ -57,25 +39,7 @@ function Navbar({ links, ColorModeContext }) {
             <>
               <Typography>Dashboard</Typography>
               <div className="mobile_view">
-                {/* <Grid item sx={{ marginLeft: "auto" }}>
-                  <IconButton
-                    sx={{ ml: 1 }}
-                    onClick={colorMode.toggleColorMode}
-                    color="inherit"
-                  >
-                    {theme.palette.mode === "dark" ? (
-                      <Brightness7Icon />
-                    ) : (
-                      <Brightness4Icon />
-                    )}
-                  </IconButton>
-                </Grid> */}
-                <DarkMode
-                  colorMode={colorMode}
-                  theme={theme}
-                  isDarkMode={isDarkMode}
-                  toggleDarkMode={toggleDarkMode}
-                />
+                <DarkMode colorMode={colorMode} theme={theme} />
                 <DrawerComp links={links} />
               </div>
             </>
@@ -96,13 +60,7 @@ function Navbar({ links, ColorModeContext }) {
                   ))}
                 </Tabs>
               </Grid>
-              <DarkMode
-                colorMode={colorMode}
-                theme={theme}
-                isDarkMode={isDarkMode}
-                toggleDarkMode={toggleDarkMode}
-                xs={1}
-              />
+              <DarkMode colorMode={colorMode} theme={theme} xs={1} />
               <Grid item xs={2} alignItems="center">
                 <Box display="flex">
                   <Button sx={{ marginLeft: "auto" }} variant="primary">
