@@ -28,6 +28,9 @@ export default function ToggleColorMode() {
   const theme = React.useMemo(
     () =>
       createTheme({
+        typography: {
+          fontFamily: "Poppins",
+        },
         palette: {
           mode,
         },

@@ -16,7 +16,7 @@ function DrawerComp({ links }) {
       {" "}
       <Drawer
         PaperProps={{
-          sx: { backgroundColor: "black" },
+          sx: { backgroundColor: "#132043", width: "200px" },
         }}
         anchor="left"
         open={open}

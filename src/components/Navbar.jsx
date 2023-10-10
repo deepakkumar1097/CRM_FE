@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   AppBar,
@@ -10,17 +10,33 @@ import {
   Typography,
   useMediaQuery,
 } from "@mui/material";
-import IconButton from "@mui/material/IconButton";
 import { useTheme } from "@mui/material/styles";
-import Brightness4Icon from "@mui/icons-material/Brightness4";
-import Brightness7Icon from "@mui/icons-material/Brightness7";
 import DrawerComp from "./DrawerComp";
+import DarkMode from "./DarkMode";
 
 function Navbar({ links, ColorModeContext }) {
   const theme = useTheme();
   const isMatch = useMediaQuery(theme.breakpoints.down("lg"));
   const colorMode = React.useContext(ColorModeContext);
   const [value, setValue] = useState();
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  const toggleDarkMode = () => {
+    setIsDarkMode(!isDarkMode);
+  };
+
+  useEffect(() => {
+    const storedDarkMode = localStorage.getItem("darkMode");
+    console.log("Stored Dark Mode:", storedDarkMode);
+    if (storedDarkMode !== null) {
+      setIsDarkMode(JSON.parse(storedDarkMode));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("darkMode", JSON.stringify(isDarkMode));
+    console.log("Updated Dark Mode:", isDarkMode);
+  }, [isDarkMode]);
 
   return (
     <Box
@@ -35,25 +51,33 @@ function Navbar({ links, ColorModeContext }) {
         p: 3,
       }}
     >
-      <AppBar sx={{ backgroundColor: "black" }}>
+      <AppBar sx={{ backgroundColor: "#132043" }}>
         <Toolbar>
           {isMatch ? (
             <>
               <Typography>Dashboard</Typography>
-              <Grid item xs={1} sx={{ marginLeft: "auto" }}>
-                <IconButton
-                  sx={{ ml: 1 }}
-                  onClick={colorMode.toggleColorMode}
-                  color="inherit"
-                >
-                  {theme.palette.mode === "dark" ? (
-                    <Brightness7Icon />
-                  ) : (
-                    <Brightness4Icon />
-                  )}
-                </IconButton>
-              </Grid>
-              <DrawerComp links={links} />
+              <div className="mobile_view">
+                {/* <Grid item sx={{ marginLeft: "auto" }}>
+                  <IconButton
+                    sx={{ ml: 1 }}
+                    onClick={colorMode.toggleColorMode}
+                    color="inherit"
+                  >
+                    {theme.palette.mode === "dark" ? (
+                      <Brightness7Icon />
+                    ) : (
+                      <Brightness4Icon />
+                    )}
+                  </IconButton>
+                </Grid> */}
+                <DarkMode
+                  colorMode={colorMode}
+                  theme={theme}
+                  isDarkMode={isDarkMode}
+                  toggleDarkMode={toggleDarkMode}
+                />
+                <DrawerComp links={links} />
+              </div>
             </>
           ) : (
             <Grid container spacing={1} alignItems="baseline">
@@ -72,20 +96,13 @@ function Navbar({ links, ColorModeContext }) {
                   ))}
                 </Tabs>
               </Grid>
-              <Grid item xs={1}>
-                {/* {theme.palette.mode} mode */}
-                <IconButton
-                  sx={{ ml: 1 }}
-                  onClick={colorMode.toggleColorMode}
-                  color="inherit"
-                >
-                  {theme.palette.mode === "dark" ? (
-                    <Brightness7Icon />
-                  ) : (
-                    <Brightness4Icon />
-                  )}
-                </IconButton>
-              </Grid>
+              <DarkMode
+                colorMode={colorMode}
+                theme={theme}
+                isDarkMode={isDarkMode}
+                toggleDarkMode={toggleDarkMode}
+                xs={1}
+              />
               <Grid item xs={2} alignItems="center">
                 <Box display="flex">
                   <Button sx={{ marginLeft: "auto" }} variant="primary">
