@@ -46,7 +46,7 @@ function Navbar({ links, ColorModeContext }) {
     // window.location.href = "/signin";
   };
 
-  const firstLetter = user.name[0].toUpperCase();
+  const firstLetter = user.userType[0].toUpperCase();
   console.log(firstLetter);
 
   return (
@@ -76,6 +76,7 @@ function Navbar({ links, ColorModeContext }) {
                           bgcolor: deepPurple[500],
                           width: "30px",
                           height: "30px",
+                          color: "white",
                         }}
                       >
                         {firstLetter}
@@ -122,6 +123,7 @@ function Navbar({ links, ColorModeContext }) {
                             bgcolor: deepPurple[500],
                             width: "30px",
                             height: "30px",
+                            color: "white",
                           }}
                         >
                           {firstLetter}
