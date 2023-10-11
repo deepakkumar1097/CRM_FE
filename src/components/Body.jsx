@@ -12,6 +12,9 @@ export default function Body() {
           backgroundColor: theme.palette.background.default,
           color: theme.palette.text.primary,
           height: "100vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
           // Add other styles for your Body component here
         }}
       >

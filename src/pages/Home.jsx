@@ -1,20 +1,29 @@
 import React, { useEffect } from "react";
-import Navbar from "../components/Navbar";
 import Body from "../components/Body";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { useSelector } from "react-redux";
+import Layout from "../components/Layout";
 
 const linksArray = ["Item One", "Item Two", "Item Three", "Item Four"];
 const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
 function Home() {
+  const { user } = useSelector((user) => ({ ...user }));
   return (
     <div className="home">
-      <Navbar links={linksArray} ColorModeContext={ColorModeContext} />
-      <Body />
+      <Layout
+        linksArray={linksArray}
+        ColorModeContext={ColorModeContext}
+        user={user}
+      >
+        <Body />
+      </Layout>
     </div>
   );
 }
 
 export default function ToggleColorMode() {
+  const isLoggedIn = localStorage.getItem("isLoggedIn");
+  console.log(isLoggedIn);
   const initialMode = localStorage.getItem("colorMode") || "light";
   const [mode, setMode] = React.useState(initialMode);
   const colorMode = React.useMemo(

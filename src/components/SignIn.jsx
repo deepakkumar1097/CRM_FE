@@ -34,7 +34,7 @@ function SignIn() {
         const token = response.data.user.accessToken;
 
         localStorage.setItem("token", token);
-        localStorage.setItem("isLoggedIn", "true");
+        localStorage.setItem("isLoggedIn", true);
         localStorage.setItem("user", JSON.stringify(response.data.user));
 
         dispatch({ type: "LOGIN", payload: response.data.user });

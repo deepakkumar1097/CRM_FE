@@ -12,13 +12,13 @@ import {
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 import DrawerComp from "./DrawerComp";
 import DarkMode from "./DarkMode";
 import Avatar from "@mui/material/Avatar";
 import { deepPurple } from "@mui/material/colors";
 
-function Navbar({ links, ColorModeContext }) {
+function Navbar({ links, ColorModeContext, user }) {
   const theme = useTheme();
   const [value, setValue] = useState();
 
@@ -29,15 +29,14 @@ function Navbar({ links, ColorModeContext }) {
 
   const colorMode = React.useContext(ColorModeContext);
 
-  const { user } = useSelector((user) => ({ ...user }));
-  console.log(user.name);
+  // const { user } = useSelector((user) => ({ ...user }));
 
   // Check if the user is logged in
   const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
 
   const handleLogout = () => {
     // Perform the logout actions (e.g., clearing user session)
-    localStorage.removeItem("isLoggedIn"); // Example: Clear a "isLoggedIn" flag
+    localStorage.setItem("isLoggedIn", false);
     localStorage.removeItem("user");
     localStorage.removeItem("token");
     localStorage.removeItem("loginUser"); // Example: Clear a user token if used
@@ -48,6 +47,10 @@ function Navbar({ links, ColorModeContext }) {
 
   const firstLetter = user.userType[0].toUpperCase();
   console.log(firstLetter);
+
+  const tabClickHandler = (e, val) => {
+    setValue(val);
+  };
 
   return (
     <Box
@@ -66,7 +69,12 @@ function Navbar({ links, ColorModeContext }) {
         <Toolbar>
           {isMatch ? (
             <>
-              <Typography>Dashboard</Typography>{" "}
+              <Typography
+                onClick={() => navigate("/home")}
+                sx={{ cursor: "pointer" }}
+              >
+                Dashboard
+              </Typography>{" "}
               <div className="mobile_view">
                 {!isSmallDevice && (
                   <>
@@ -98,20 +106,26 @@ function Navbar({ links, ColorModeContext }) {
           ) : (
             <Grid container spacing={1} alignItems="baseline">
               <Grid item xs={2}>
-                <Typography>Dashboard</Typography>
+                <Typography
+                  onClick={() => navigate("/home")}
+                  sx={{ cursor: "pointer" }}
+                >
+                  Dashboard
+                </Typography>
               </Grid>
               <Grid item xs={7}>
                 <Tabs
                   value={value}
                   textColor="inherit"
                   indicatorColor="secondary"
-                  onChange={(e, val) => setValue(val)}
+                  onChange={(e, val) => tabClickHandler(e, val)}
                 >
                   {links.map((item, index) => (
                     <Tab label={item} key={index} />
                   ))}
                 </Tabs>
               </Grid>
+
               <DarkMode colorMode={colorMode} theme={theme} xs={1} />
               <Grid item xs={2} alignItems="center">
                 <Box display="flex" alignItems={"center"}>
