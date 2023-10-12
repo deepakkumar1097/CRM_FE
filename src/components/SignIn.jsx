@@ -7,8 +7,10 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
+import { useTheme } from "@mui/material/styles";
 
 function SignIn() {
+  const theme = useTheme();
   let navigate = useNavigate();
 
   const [userId, setUserId] = useState("");
@@ -49,7 +51,10 @@ function SignIn() {
     }
   };
   return (
-    <div className="form signin-form">
+    <div
+      className="form signin-form"
+      style={{ height: "100vh", width: "100%" }}
+    >
       <Box
         onSubmit={handleSubmit}
         component="form"
@@ -59,6 +64,10 @@ function SignIn() {
           justifyContent: "center",
           alignItems: "center",
           flexDirection: "column",
+          backgroundColor: theme.palette.background.default,
+          color: theme.palette.text.primary,
+          height: "100vh",
+          width: "100%",
         }}
         noValidate
         autoComplete="off"

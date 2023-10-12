@@ -9,8 +9,10 @@ import Select from "@mui/material/Select";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
+import { useTheme } from "@mui/material/styles";
 
 function SignUp() {
+  const theme = useTheme();
   let navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
@@ -24,9 +26,6 @@ function SignUp() {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
-  //   const handleSelectChange = (event) => {
-  //     setFormData({ ...formData, userType: event.target.value });
-  //   };
 
   const handleSubmit = async (e) => {
     console.log(1);
@@ -51,7 +50,10 @@ function SignUp() {
     }
   };
   return (
-    <div className="form signup-form">
+    <div
+      className="form signup-form"
+      style={{ height: "100vh", width: "100%" }}
+    >
       <Box
         onSubmit={handleSubmit}
         component="form"
@@ -61,6 +63,10 @@ function SignUp() {
           justifyContent: "center",
           alignItems: "center",
           flexDirection: "column",
+          backgroundColor: theme.palette.background.default,
+          color: theme.palette.text.primary,
+          height: "100vh",
+          width: "100%",
         }}
         noValidate
         autoComplete="off"

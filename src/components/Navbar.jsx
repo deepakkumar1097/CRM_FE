@@ -12,9 +12,8 @@ import {
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
-// import { useSelector } from "react-redux";
 import DrawerComp from "./DrawerComp";
-import DarkMode from "./DarkMode";
+import DarkMode from "../utils/DarkMode";
 import Avatar from "@mui/material/Avatar";
 import { deepPurple } from "@mui/material/colors";
 
@@ -28,8 +27,6 @@ function Navbar({ links, ColorModeContext, user }) {
   const isSmallDevice = useMediaQuery(theme.breakpoints.down("sm"));
 
   const colorMode = React.useContext(ColorModeContext);
-
-  // const { user } = useSelector((user) => ({ ...user }));
 
   // Check if the user is logged in
   const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
@@ -45,11 +42,17 @@ function Navbar({ links, ColorModeContext, user }) {
     // window.location.href = "/signin";
   };
 
-  const firstLetter = user.userType[0].toUpperCase();
-  console.log(firstLetter);
+  let firstLetter = "";
+
+  if (user && user.userType) {
+    firstLetter = user.userType[0].toUpperCase();
+  } else {
+    firstLetter = "";
+  }
 
   const tabClickHandler = (e, val) => {
     setValue(val);
+    navigate(`/item${val + 1}`);
   };
 
   return (
@@ -90,7 +93,7 @@ function Navbar({ links, ColorModeContext, user }) {
                         {firstLetter}
                       </Avatar>
                       <Typography sx={{ marginRight: 1 }}>
-                        {user.name}
+                        {user?.name}
                       </Typography>
                     </div>
                   </>
@@ -113,18 +116,22 @@ function Navbar({ links, ColorModeContext, user }) {
                   Dashboard
                 </Typography>
               </Grid>
-              <Grid item xs={7}>
-                <Tabs
-                  value={value}
-                  textColor="inherit"
-                  indicatorColor="secondary"
-                  onChange={(e, val) => tabClickHandler(e, val)}
-                >
-                  {links.map((item, index) => (
-                    <Tab label={item} key={index} />
-                  ))}
-                </Tabs>
-              </Grid>
+              {isLoggedIn ? (
+                <Grid item xs={7}>
+                  <Tabs
+                    value={value}
+                    textColor="inherit"
+                    indicatorColor="secondary"
+                    onChange={(e, val) => tabClickHandler(e, val)}
+                  >
+                    {links.map((item, index) => (
+                      <Tab label={item} key={index} />
+                    ))}
+                  </Tabs>
+                </Grid>
+              ) : (
+                ""
+              )}
 
               <DarkMode colorMode={colorMode} theme={theme} xs={1} />
               <Grid item xs={2} alignItems="center">
@@ -143,7 +150,7 @@ function Navbar({ links, ColorModeContext, user }) {
                           {firstLetter}
                         </Avatar>
                         <Typography sx={{ marginRight: 1 }}>
-                          {user.name}
+                          {user?.name}
                         </Typography>
                       </div>
                       <Button

@@ -63,8 +63,6 @@ function DrawerComp({ links, isLoggedIn, handleLogout }) {
         <MenuRoundedIcon style={{ color: "white" }} />
       </IconButton>
     </>
-
-    // </Box>
   );
 }
 
