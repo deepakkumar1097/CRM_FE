@@ -15,6 +15,7 @@ import Item4 from "./pages/Item4";
 
 function App() {
   const { user } = useSelector((user) => ({ ...user }));
+  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
   return (
     <>
       <StyledEngineProvider>
@@ -24,12 +25,20 @@ function App() {
           user={user}
         >
           <Routes>
-            <Route path="/" element={<Navigate to="/signin" />} />
-            <Route path="/signin" element={<SignIn />} />
+            {isLoggedIn ? (
+              <Route path="/" element={<Navigate to="/signin" />} />
+            ) : (
+              <Route path="/signin" element={<SignIn />} />
+            )}
+
             <Route path="/signup" element={<SignUp />} />
           </Routes>
           <Routes>
-            <Route path="/home" element={<Body />} />
+            {isLoggedIn ? (
+              <Route path="/home" element={<Body />} />
+            ) : (
+              <Route path="/home" element={<Navigate to="/signin" />} />
+            )}
             <Route path="/item1" element={<Item1 />} />
             <Route path="/item2" element={<Item2 />} />
             <Route path="/item3" element={<Item3 />} />
